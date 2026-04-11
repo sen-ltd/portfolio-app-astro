@@ -1,0 +1,21 @@
+{
+  "name": "portfolio-app-astro",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "SEN portfolio browser, Astro 5 + TypeScript. Islands architecture port — zero JS by default, tiny vanilla-TS client island for filtering/sorting.",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "astro": "^5.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.5"
+  },
+  "license": "MIT"
+}

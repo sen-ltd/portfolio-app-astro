@@ -1,0 +1,35 @@
+---
+// index.astro — SEN Portfolio Browser (Astro islands architecture)
+// No data fetching at SSG time; the client island fetches at runtime
+// so that sen.ltd/portfolio/data.json is always the live source of truth.
+---
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="SEN 合同会社の公開作品集 — Astro 5 islands architecture implementation" />
+    <title>SEN Portfolio — Astro</title>
+    <style>
+      @import '../style.css';
+    </style>
+  </head>
+  <body>
+    <!--
+      #app is the single island. Astro ships the HTML skeleton as-is
+      (zero JS for the shell). The <script> below is processed by Vite
+      and becomes the only client bundle — a small vanilla-TS file with
+      no framework runtime.
+    -->
+    <div id="app">
+      <!-- SSR skeleton: shown before the client bundle executes -->
+      <div class="state">読み込み中… / Loading…</div>
+    </div>
+
+    <script>
+      // Astro treats this <script> as a client-side module entry point.
+      // Vite processes the TS imports and outputs a single optimised bundle.
+      import '../client';
+    </script>
+  </body>
+</html>
