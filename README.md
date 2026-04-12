@@ -74,3 +74,10 @@ MIT. See [LICENSE](./LICENSE).
 ---
 
 Part of the [SEN portfolio series](https://sen.ltd/portfolio/). Entry 028.
+
+<!-- sen-publish:links -->
+## Links
+
+- 🌐 Demo: https://sen.ltd/portfolio/portfolio-app-astro/
+- 📝 dev.to: https://dev.to/sendotltd/astro-port-317-kb-gzip-94-vs-react-new-series-record-because-the-framework-runtime-is-5f09
+<!-- /sen-publish:links -->
