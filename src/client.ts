@@ -5,6 +5,7 @@ import { loadPortfolioData } from './data';
 import { filterAndSort, type FilterState, type SortKey } from './filter';
 import { MESSAGES, detectDefaultLang } from './i18n';
 import type { Lang, PortfolioData, Entry, Category, Stack, Stage } from './types';
+import { GitHubIcon, XIcon, QiitaIcon, DevToIcon } from './icons';
 
 // ---- State ------------------------------------------------------------------
 
@@ -204,14 +205,8 @@ function buildCard(
 
   const actions = el('div', { class: 'actions' });
   if (entry.demo) actions.appendChild(a(entry.demo, 'action-btn primary', `\u2197 ${m.demoLabel}`));
-  if (entry.github) actions.appendChild(a(entry.github, 'action-btn', m.githubLabel));
-  if (entry.articles.length > 0) {
-    const arts = el('div', { class: 'articles' });
-    for (const art of entry.articles) {
-      arts.appendChild(a(art.url, 'article-link', art.platform));
-    }
-    actions.appendChild(arts);
-  }
+  const iconRow = buildIconLinks(entry, _lang);
+  if (iconRow) actions.appendChild(iconRow);
   if (entry.testCount && entry.testCount > 0) {
     actions.appendChild(el('span', { class: 'tests-badge' }, m.testsLabel(entry.testCount)));
   }
@@ -225,6 +220,80 @@ function buildCard(
   card.appendChild(techRow);
   card.appendChild(actions);
   return card;
+}
+
+function buildIconLinks(entry: Entry, lang: Lang): HTMLElement | null {
+  const qiita = entry.articles.find((a) => a.platform === 'qiita');
+  const devto = entry.articles.find((a) => a.platform === 'devto');
+  const sen = entry.articles.find((a) => a.platform === 'sen');
+  const twitter = entry.social?.twitter;
+
+  if (!entry.github && !twitter && !qiita && !devto && !sen) return null;
+
+  const row = el('div', { class: 'icon-links' });
+
+  if (entry.github) {
+    const link = el('a', {
+      href: entry.github,
+      class: 'icon-link',
+      target: '_blank',
+      rel: 'noopener',
+      title: 'GitHub',
+    });
+    link.appendChild(GitHubIcon());
+    row.appendChild(link);
+  }
+
+  if (twitter) {
+    const link = el('a', {
+      href: twitter,
+      class: 'icon-link',
+      target: '_blank',
+      rel: 'noopener',
+      title: 'X (Twitter)',
+    });
+    link.appendChild(XIcon());
+    row.appendChild(link);
+  }
+
+  if (qiita) {
+    const link = el('a', {
+      href: qiita.url,
+      class: 'icon-link',
+      target: '_blank',
+      rel: 'noopener',
+      title: 'Qiita',
+    });
+    link.appendChild(QiitaIcon());
+    row.appendChild(link);
+  }
+
+  if (devto) {
+    const link = el('a', {
+      href: devto.url,
+      class: 'icon-link',
+      target: '_blank',
+      rel: 'noopener',
+      title: 'dev.to',
+    });
+    link.appendChild(DevToIcon());
+    row.appendChild(link);
+  }
+
+  // JA article badge: only show when a sen-hosted JA article exists AND
+  // we're not already linking to Qiita (which covers the same language).
+  if (sen && !qiita) {
+    const badge = el('a', {
+      href: sen.url,
+      class: 'article-badge',
+      target: '_blank',
+      rel: 'noopener',
+      title: lang === 'ja' ? 'JA 記事' : 'Japanese article',
+    }, lang === 'ja' ? '記事' : 'JA');
+    row.appendChild(badge);
+  }
+
+  return row;
 }
 
 // ---- Event wiring -----------------------------------------------------------
